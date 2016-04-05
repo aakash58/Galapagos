@@ -2,6 +2,8 @@
  * General-purpose widget styles, applied regardless of what the widget "theme" is
  */
 
+.breakpoints {width: .8em;}
+
 .netlogo-model {
     display: flex;
     padding: 20px;

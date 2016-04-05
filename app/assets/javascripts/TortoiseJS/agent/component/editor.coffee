@@ -1,7 +1,34 @@
+username = localStorage.getItem('user')
+
+postGutterLogs = (info) ->
+  $.ajax(
+    method: 'POST'
+    url: '/gutterLogs'
+    data:
+      'user': 'k2c-' + username
+      'action': info.action
+      'timeStamp': Date.now()
+      'line': info.line + 1
+      'text': info.text).done (msg) ->
+    console.log 'Written to Mongo: ' + msg
+    return
+  return
+
+postKeystrokeLogs = (info) ->
+  $.ajax(
+    method: 'POST'
+    url: '/keystrokeLogs'
+    data: info).done (msg) ->
+    console.log 'Written to Mongo: ' + msg
+    return
+  return
+  
 window.RactiveEditorWidget = Ractive.extend({
   onrender: ->
     window.editor = CodeMirror(@find('.netlogo-code'), {
       value:   @get('code'),
+      lineNumbers: true,
+      gutters: ["CodeMirror-linenumbers", "breakpoints"],
       tabSize: 2,
       mode:    'netlogo',
       theme:   'netlogo-default',
@@ -11,6 +38,63 @@ window.RactiveEditorWidget = Ractive.extend({
         "Cmd-F":  "findPersistent"
       }
     })
+    
+    makeMarker = (info) ->
+      info.action = 'AddGutterMarker'
+      postGutterLogs info
+      #localStorage.setItem("MarkerAdded-" + Date.now(), JSON.stringify({
+      #  line: info.line + 1,
+      #  text: info.text
+      #}));
+      marker = document.createElement('div')
+      marker.style.color = '#822'
+      marker.style.width = '.8em'
+      marker.style.fontSize = '15px'
+      marker.innerHTML = ' * '
+      marker
+      
+    removeMarker = (info) ->
+      #console.log("Removing marker at line: " + info.line + " with text: " + info.text);
+      info.action = 'RemoveGutterMarker'
+      postGutterLogs info
+      null
+      
+    editor.on 'gutterClick', (cm, n) ->
+      info = cm.lineInfo(n)
+      cm.setGutterMarker n, 'breakpoints', if info.gutterMarkers then removeMarker(info) else makeMarker(info)
+      return
+      
+    editor.on 'change', (cm, change) ->
+      from = change.from
+      text = change.text.join('\n')
+      removed = change.removed.join('\n')
+      to = cm.posFromIndex(cm.indexFromPos(from) + text.length)
+      before = cm.getRange({
+        line: from.line - 5
+        ch: 0
+      }, from)
+      after = cm.getRange(to,
+        line: to.line + 6
+        ch: 0)
+      currentLine = cm.getRange({
+        line: from.line
+        ch: 0
+      },
+        line: from.line
+        ch: from.line.length)
+      logEntry = 
+        'user': 'k2c-' + username
+        'timeStamp': Date.now()
+        'line': from.line + 1
+        'beforeContent': before
+        'removedText': removed
+        'addedText': text
+        'currentLineText': currentLine
+        'afterContent': after
+      postKeystrokeLogs logEntry
+      #console.log("Line number", from.line + 1, "Before: ", before, "Removed: ", removed, "Added: ", text, "CurrentLine: ", currentLine, "After: ", after);
+      return
+      
     editor.on('change', =>
       newCode = editor.getValue()
       @set('isStale', @get('lastCompiledCode') isnt newCode)
