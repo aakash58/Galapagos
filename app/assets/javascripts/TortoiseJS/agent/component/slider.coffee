@@ -16,7 +16,8 @@ window.RactiveSlider = Ractive.extend({
            style="{{dims}}">
       <input type="range"
              max="{{widget.maxValue}}" min="{{widget.minValue}}"
-             step="{{widget.step}}" value="{{widget.currentValue}}" />
+             step="{{widget.step}}" value="{{widget.currentValue}}" onfocus="this.oldvalue = this.value;" 
+             oninput="postSliderLogs(nextElementSibling.textContent, this.oldvalue, value)"/>
       <div class="netlogo-slider-label">
         <span class="netlogo-label" on-click="showErrors">{{widget.display}}</span>
         <span class="netlogo-slider-value">

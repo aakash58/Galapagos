@@ -44,6 +44,10 @@ libraryDependencies ++= Seq(
   "org.webjars" % "codemirror" % "5.11"
 )
 
+libraryDependencies <+= (libraryDependencies, sbtVersion) { (deps, version) =>
+  "de.element34" % "sbt-eclipsify" % "0.7.0"
+}
+
 resolvers += bintray.Opts.resolver.repo("netlogo", "TortoiseAux")
 
 resolvers += bintray.Opts.resolver.repo("netlogo", "NetLogoHeadless")

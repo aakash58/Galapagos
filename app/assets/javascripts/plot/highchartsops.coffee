@@ -32,11 +32,13 @@ class window.HighchartsOps extends PlotOps
         series:  [],
         title:   { text: plot.name },
         tooltip: { pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>' },
-        xAxis:   { title: { text: plot.xLabel } },
-        yAxis:   { title: { text: plot.yLabel, x: -7 }, labels: { padding: 0, x: -15 } },
+        xAxis:   { tickInterval: 50, minorTickInterval: 10, title: { text: plot.xLabel } },
+        yAxis:   { tickInterval: 50, minorTickInterval: 10, title: { text: plot.yLabel, x: -7 }, labels: { padding: 0, x: -15 } },
         plotOptions: {
           series: {
-            turboThreshold: 1
+            turboThreshold: 1, 
+            pointInterval: 3,
+            cropThreshold: 1
           },
         }
       })

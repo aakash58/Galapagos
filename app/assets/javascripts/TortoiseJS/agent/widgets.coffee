@@ -380,10 +380,10 @@ template =
 
     <div class="netlogo-interface-unlocker" style="display: none" on-click="toggleInterfaceLock"></div>
 
-    <label class="netlogo-widget netlogo-speed-slider">
+<!--    <label class="netlogo-widget netlogo-speed-slider">
       <input type="range" min=-1 max=1 step=0.01 value={{speed}} />
       <span class="netlogo-label">speed</span>
-    </label>
+    </label> -->
 
     <div style="position: relative; width: {{width}}px; height: {{height}}px"
          class="netlogo-widget-container"

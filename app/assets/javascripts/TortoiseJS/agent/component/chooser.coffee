@@ -14,7 +14,8 @@ window.RactiveChooser = Ractive.extend({
            class="netlogo-widget netlogo-chooser netlogo-input"
            style="{{dims}}">
       <span class="netlogo-label">{{widget.display}}</span>
-      <select class="netlogo-chooser-select" value="{{widget.currentValue}}">
+      <select class="netlogo-chooser-select" value="{{widget.currentValue}}" 
+      oninput="postSliderLogs(previousElementSibling.innerHTML, '', value)">
       {{#widget.choices}}
         <option class="netlogo-chooser-option" value="{{.}}">{{>literal}}</option>
       {{/}}

@@ -33,4 +33,6 @@ resolvers += Resolver.url(
 
 addSbtPlugin("org.nlogo" % "play-scraper" % "0.7.2")
 
+addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "4.0.0")
+
 libraryDependencies += "org.im4java" % "im4java" % "1.4.0" // only used for asset generation

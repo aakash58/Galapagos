@@ -5,7 +5,7 @@ postGutterLogs = (info) ->
     method: 'POST'
     url: '/gutterLogs'
     data:
-      'user': 'k2c-' + username
+      'user': 'texas-' + username
       'action': info.action
       'timeStamp': Date.now()
       'line': info.line + 1
@@ -83,7 +83,7 @@ window.RactiveEditorWidget = Ractive.extend({
         line: from.line
         ch: from.line.length)
       logEntry = 
-        'user': 'k2c-' + username
+        'user': 'texas-' + username
         'timeStamp': Date.now()
         'line': from.line + 1
         'beforeContent': before
